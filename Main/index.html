@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Weather Dashboard</title>
+</head>
+<body>
+    <header class="container-fluid text-center">
+        <h1>Weather Dashboard</h1>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <h2 id="form-heading" class="form-label">
+                Search for a City:
+            </h2>
+            <form id="search-form" class="form">
+                <div class="form-inline form-group">
+                    <div class="input-group">
+                        <input type="text"
+                        class="form-input weather-search"
+                        id="search-input"
+                        placeholder="Gainesville"
+                        aria-labelledby="form-heading"
+                        aria-controls="today forecast"
+                        />
+                        <div class="input-group-append">
+                            <button class="btn search-button"
+                            id="search-button"
+                            type="submit"
+                            aria-label="submit"
+                            > Search </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        
+    </div>
+</body>
+</html>
