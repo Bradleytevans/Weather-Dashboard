@@ -3,8 +3,8 @@ var weatherAPI = 'https://api.openweathermap.org';
 var weatherAPIKey = 'd91f911bcf2c0f925fb6535547a5ddc9';
 var searchForm = document.querySelector('#search-form');
 var searchInput = document.querySelector('#search-input');
-var today = document.querySelector('#today');
-var forcast = document.querySelector('#forecast');
+var todayCon = document.querySelector('#today');
+var forcastCon = document.querySelector('#forecast');
 var searchHistoryContainer = document.querySelector('#history');
 
 dayjs.extend(window.dayjs_plugin_utc);
@@ -55,10 +55,8 @@ function currentWeather(city, weather, timezone) {
     uviBadge.textContent = uvi;
     uviEL.append(uviBadge);
     cardBody.append(uviEL);
-    today
-
-
-    
+    todayCon.innerHTML = '';
+    todayCon.append(card);
 }
 
 function createSearchHistory() {
@@ -90,3 +88,38 @@ function getSearchHistory() {
 	}
 	createSearchHistory();
 }
+
+function forecastCard(forecast, timezone) {
+    var unixTs = forecast.date;
+    var icon = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
+    var iconDesc = forecast.weather[0].description;
+    var temp = forecast.temp_day;
+    var humidity = forecast;
+    var wind = forecast.wind_speed;
+    var col = document.createElement('div');
+	var card = document.createElement('div');
+	var cardBody = document.createElement('div');
+	var cardTitle = document.createElement('h5');
+	var weatherImg = document.createElement('img');
+	var tempEl = document.createElement('p');
+	var windEl = document.createElement('p');
+	var humidEl = document.createElement('p');
+    col.append(card);
+    card.append(cardBody);
+    cardBody.append(cardTitle, weatherIcon, tempEl, windEl, humidEl);
+    col.classList.add('five-day-card');
+    card.setAttribute('class', 'card bg-primary h-100 text-white');
+    cardBody.setAttribute('class', 'card-body p-2');
+    cardTitle.setAttribute('class', 'card-title');
+    tempEl.setAttribute('class', 'card-text');
+	windEl.setAttribute('class', 'card-text');
+	humidityEl.setAttribute('class', 'card-text');
+    cardTitle.textContent = dayjs.unix(unixTs).tz(timezone).format('M/D/YYYY');
+	weatherIcon.setAttribute('src', icon);
+	weatherIcon.setAttribute('alt', iconDesc);
+	tempEl.textContent = `Temp: ${tempF} °F`;
+	windEl.textContent = `Wind: ${windMph} MPH`;
+	humidityEl.textContent = `Humidity: ${humidity} %`;
+	forecastCon.append(col);
+}
+
