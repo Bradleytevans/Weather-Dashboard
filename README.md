@@ -12,7 +12,7 @@ Allows the user to find the weather for their desired city using an API called O
 * [Questions](#questions)
 
 ## Installation
-Visit this link :
+Visit this link : https://bradleytevans.github.io/Weather-Dashboard/
 
 ## Usage
 ![screencapture-file-C-Users-bradl-Desktop-Projects-Weather-Dashboard-Main-index-html-2021-12-30-22_41_50](https://user-images.githubusercontent.com/87036647/147801987-c47872db-ba58-4b76-adbb-e260fbac1441.png)
