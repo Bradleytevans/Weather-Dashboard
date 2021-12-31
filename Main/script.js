@@ -90,10 +90,10 @@ function currentWeather(city, weather, timezone) {
 }
 
 function forecastCard(forecast, timezone) {
-    var unixTs = forecast.date;
+    var unixTs = forecast.dt;
     var icon = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
     var iconDesc = forecast.weather[0].description;
-    var temp = forecast.temp_day;
+    var temp = forecast.temp.day;
     var { humidity } = forecast;
     var wind = forecast.wind_speed;
     var col = document.createElement('div');
@@ -124,8 +124,8 @@ function forecastCard(forecast, timezone) {
 }
 
 function renderForecast(dailyForecast, timezone) {
-	var startDate = dayjs().tz(timezone).add(1, 'day').startOf('day').unix();
-	var endDate = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
+	var startDt = dayjs().tz(timezone).add(1, 'day').startOf('day').unix();
+	var endDt = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
 	var headingCol = document.createElement('div');
 	var heading = document.createElement('h4');
 	headingCol.setAttribute('class', 'col-12');
@@ -134,7 +134,7 @@ function renderForecast(dailyForecast, timezone) {
 	forecastCon.innerHTML = '';
 	forecastCon.append(headingCol);
 	for (var i = 0; i < dailyForecast.length; i++) {
-		if (dailyForecast[i].dt >= startDate && dailyForecast[i].dt < endDate) {
+		if (dailyForecast[i].dt >= startDt && dailyForecast[i].dt < endDt) {
 			forecastCard(dailyForecast[i], timezone);
 		}
 	}
@@ -187,7 +187,6 @@ function searchFormSubmit(e) {
 }
 
 function searchHistoryClick(e) {
-	// Don't do search if current elements is not a search history button
 	if (!e.target.matches('.btn-history')) {
 		return;
 	}
