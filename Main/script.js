@@ -15,6 +15,7 @@ function createSearchHistory() {
 	for (var i = searchHistory.length - 1; i >= 0; i--) {
 		var btn = document.createElement('button');
 		btn.setAttribute('type', 'button');
+        btn.setAttribute('class', 'btn-secondary')
 		btn.setAttribute('aria-controls', 'today forecast');
 		btn.classList.add('history-btn', 'btn-history');
 		btn.setAttribute('data-search', searchHistory[i]);
@@ -57,7 +58,7 @@ function currentWeather(city, weather, timezone) {
     var humidEl = document.createElement('p');
     var uviEL = document.createElement('p');
     var uviBadge = document.createElement('button');
-    card.setAttribute('class', 'card');
+    card.setAttribute('class', 'card bg-info');
     cardBody.setAttribute('class', 'card-body');
     card.append(cardBody);
     heading.setAttribute('class', 'h3 card-title');
@@ -108,7 +109,7 @@ function forecastCard(forecast, timezone) {
     card.append(cardBody);
     cardBody.append(cardTitle, weatherImg, tempEl, windEl, humidEl);
     col.classList.add('five-day-card');
-    card.setAttribute('class', 'card bg-primary h-100 text-white');
+    card.setAttribute('class', 'card bg-info h-100 text-white m-1 pb-3');
     cardBody.setAttribute('class', 'card-body p-2');
     cardTitle.setAttribute('class', 'card-title');
     tempEl.setAttribute('class', 'card-text');
