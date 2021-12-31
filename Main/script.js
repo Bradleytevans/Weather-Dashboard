@@ -15,6 +15,7 @@ function createSearchHistory() {
 	for (var i = searchHistory.length - 1; i >= 0; i--) {
 		var btn = document.createElement('button');
 		btn.setAttribute('type', 'button');
+        btn.setAttribute('class', 'btn-secondary')
 		btn.setAttribute('aria-controls', 'today forecast');
 		btn.classList.add('history-btn', 'btn-history');
 		btn.setAttribute('data-search', searchHistory[i]);
@@ -57,13 +58,13 @@ function currentWeather(city, weather, timezone) {
     var humidEl = document.createElement('p');
     var uviEL = document.createElement('p');
     var uviBadge = document.createElement('button');
-    card.setAttribute('class', 'card');
+    card.setAttribute('class', 'card bg-info');
     cardBody.setAttribute('class', 'card-body');
     card.append(cardBody);
     heading.setAttribute('class', 'h3 card-title');
     tempEl.setAttribute('class', 'card-text');
     windEl.setAttribute('class', 'card-text');
-    humidity.setAttribute('class', 'card-text');
+    humidEl.setAttribute('class', 'card-text');
     heading.textContent = `${city} (${date})`;
     weatherImg.setAttribute('src', icon);
     weatherImg.setAttribute('alt', iconDesc);
@@ -90,11 +91,11 @@ function currentWeather(city, weather, timezone) {
 }
 
 function forecastCard(forecast, timezone) {
-    var unixTs = forecast.date;
+    var unixTs = forecast.dt;
     var icon = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
     var iconDesc = forecast.weather[0].description;
-    var temp = forecast.temp_day;
-    var humidity = forecast;
+    var temp = forecast.temp.day;
+    var { humidity } = forecast;
     var wind = forecast.wind_speed;
     var col = document.createElement('div');
 	var card = document.createElement('div');
@@ -106,26 +107,26 @@ function forecastCard(forecast, timezone) {
 	var humidEl = document.createElement('p');
     col.append(card);
     card.append(cardBody);
-    cardBody.append(cardTitle, weatherIcon, tempEl, windEl, humidEl);
+    cardBody.append(cardTitle, weatherImg, tempEl, windEl, humidEl);
     col.classList.add('five-day-card');
-    card.setAttribute('class', 'card bg-primary h-100 text-white');
+    card.setAttribute('class', 'card bg-info h-100 text-white m-1 pb-3');
     cardBody.setAttribute('class', 'card-body p-2');
     cardTitle.setAttribute('class', 'card-title');
     tempEl.setAttribute('class', 'card-text');
 	windEl.setAttribute('class', 'card-text');
-	humidityEl.setAttribute('class', 'card-text');
+	humidEl.setAttribute('class', 'card-text');
     cardTitle.textContent = dayjs.unix(unixTs).tz(timezone).format('M/D/YYYY');
 	weatherImg.setAttribute('src', icon);
 	weatherImg.setAttribute('alt', iconDesc);
 	tempEl.textContent = `Temp: ${temp} °F`;
 	windEl.textContent = `Wind: ${wind} MPH`;
-	humidityEl.textContent = `Humidity: ${humidity} %`;
+	humidEl.textContent = `Humidity: ${humidity} %`;
 	forecastCon.append(col);
 }
 
 function renderForecast(dailyForecast, timezone) {
-	var startDate = dayjs().tz(timezone).add(1, 'day').startOf('day').unix();
-	var endDate = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
+	var startDt = dayjs().tz(timezone).add(1, 'day').startOf('day').unix();
+	var endDt = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
 	var headingCol = document.createElement('div');
 	var heading = document.createElement('h4');
 	headingCol.setAttribute('class', 'col-12');
@@ -134,8 +135,8 @@ function renderForecast(dailyForecast, timezone) {
 	forecastCon.innerHTML = '';
 	forecastCon.append(headingCol);
 	for (var i = 0; i < dailyForecast.length; i++) {
-		if (dailyForecast[i].dt >= startDate && dailyForecast[i].dt < endDate) {
-			renderForecastCard(dailyForecast[i], timezone);
+		if (dailyForecast[i].dt >= startDt && dailyForecast[i].dt < endDt) {
+			forecastCard(dailyForecast[i], timezone);
 		}
 	}
 }
@@ -146,8 +147,8 @@ function createItems(city, data) {
 }
 
 function fetchWeather(location) {
-    var lat = location;
-    var lon = location;
+    var { lat } = location;
+    var { lon } = location;
     var city = location.name;
     var apiUrl = `${weatherAPI}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${weatherAPIKey}`;
     fetch(apiUrl).then(function(res) {
@@ -187,7 +188,6 @@ function searchFormSubmit(e) {
 }
 
 function searchHistoryClick(e) {
-	// Don't do search if current elements is not a search history button
 	if (!e.target.matches('.btn-history')) {
 		return;
 	}
