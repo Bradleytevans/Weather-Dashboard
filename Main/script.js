@@ -63,7 +63,7 @@ function currentWeather(city, weather, timezone) {
     heading.setAttribute('class', 'h3 card-title');
     tempEl.setAttribute('class', 'card-text');
     windEl.setAttribute('class', 'card-text');
-    humidity.setAttribute('class', 'card-text');
+    humidEl.setAttribute('class', 'card-text');
     heading.textContent = `${city} (${date})`;
     weatherImg.setAttribute('src', icon);
     weatherImg.setAttribute('alt', iconDesc);
@@ -94,7 +94,7 @@ function forecastCard(forecast, timezone) {
     var icon = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
     var iconDesc = forecast.weather[0].description;
     var temp = forecast.temp_day;
-    var humidity = forecast;
+    var { humidity } = forecast;
     var wind = forecast.wind_speed;
     var col = document.createElement('div');
 	var card = document.createElement('div');
@@ -106,20 +106,20 @@ function forecastCard(forecast, timezone) {
 	var humidEl = document.createElement('p');
     col.append(card);
     card.append(cardBody);
-    cardBody.append(cardTitle, weatherIcon, tempEl, windEl, humidEl);
+    cardBody.append(cardTitle, weatherImg, tempEl, windEl, humidEl);
     col.classList.add('five-day-card');
     card.setAttribute('class', 'card bg-primary h-100 text-white');
     cardBody.setAttribute('class', 'card-body p-2');
     cardTitle.setAttribute('class', 'card-title');
     tempEl.setAttribute('class', 'card-text');
 	windEl.setAttribute('class', 'card-text');
-	humidityEl.setAttribute('class', 'card-text');
+	humidEl.setAttribute('class', 'card-text');
     cardTitle.textContent = dayjs.unix(unixTs).tz(timezone).format('M/D/YYYY');
 	weatherImg.setAttribute('src', icon);
 	weatherImg.setAttribute('alt', iconDesc);
 	tempEl.textContent = `Temp: ${temp} °F`;
 	windEl.textContent = `Wind: ${wind} MPH`;
-	humidityEl.textContent = `Humidity: ${humidity} %`;
+	humidEl.textContent = `Humidity: ${humidity} %`;
 	forecastCon.append(col);
 }
 
@@ -135,7 +135,7 @@ function renderForecast(dailyForecast, timezone) {
 	forecastCon.append(headingCol);
 	for (var i = 0; i < dailyForecast.length; i++) {
 		if (dailyForecast[i].dt >= startDate && dailyForecast[i].dt < endDate) {
-			renderForecastCard(dailyForecast[i], timezone);
+			forecastCard(dailyForecast[i], timezone);
 		}
 	}
 }
@@ -146,8 +146,8 @@ function createItems(city, data) {
 }
 
 function fetchWeather(location) {
-    var lat = location;
-    var lon = location;
+    var { lat } = location;
+    var { lon } = location;
     var city = location.name;
     var apiUrl = `${weatherAPI}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${weatherAPIKey}`;
     fetch(apiUrl).then(function(res) {
